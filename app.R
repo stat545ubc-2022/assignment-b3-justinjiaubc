@@ -9,13 +9,16 @@ ui <- fluidPage(
   titlePanel("BC Liquor Store prices"),
   sidebarLayout(
     sidebarPanel(
+      #6.Add an image to the UI. 
+      img(src = "test.png"),
       sliderInput("priceInput", "Price", 0, 100, c(25, 40), pre = "$"),
-      radioButtons("typeInput", "Product type",
+      #5.Allow the user to search for multiple entries simultaneously
+      checkboxGroupInput("typeInput", "Product type",
                    choices = c("BEER", "REFRESHMENT", "SPIRITS", "WINE"),
                    selected = "WINE"),
       uiOutput("countryOutput"),
       #3.Allow the user to download your table as a .csv file
-      downloadButton("downloadData")
+      downloadButton("downloadData"),
     ),
     mainPanel(
       #2.place plot and table in separate tabs
@@ -25,6 +28,8 @@ ui <- fluidPage(
         tabPanel("Table", DT::dataTableOutput("results")) 
       ),
       br(), br(),
+      #4.Show the number of results found whenever the filters change.
+      textOutput("summary")
     )
   )
 )
@@ -40,7 +45,9 @@ server <- function(input, output) {
     if (is.null(input$countryInput)) {
       return(NULL)
     }    
-    
+    if (is.null(input$typeInput)) {
+      return(NULL)
+    }
     bcl %>%
       filter(Price >= input$priceInput[1],
              Price <= input$priceInput[2],
@@ -69,6 +76,10 @@ server <- function(input, output) {
       write.csv(bcl, file)
     }
   )
+  #4.Show the number of results found whenever the filters change.
+  output$summary <- renderText({
+    paste0("We found ", nrow(filtered()), " options for you.")
+  })
 }
 
 shinyApp(ui = ui, server = server)

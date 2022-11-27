@@ -5,7 +5,9 @@ account: justinjiaubc
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7732958
-bundleId: 6555128
+bundleId: 6558670
 url: https://justinjiaubc.shinyapps.io/assignment-b3-justinjiaubc/
-when: 1669406195.14266
-lastSyncTime: 1669406195.14267
+when: 1669528307.28166
+lastSyncTime: 1669528307.28167
+asMultiple: FALSE
+asStatic: FALSE
